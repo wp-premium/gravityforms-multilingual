@@ -81,8 +81,9 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 		$form_package            = new stdClass();
 		$form_package->kind      = __( 'Gravity Form', 'gravity-forms-ml' );
 		$form_package->kind_slug = ICL_GRAVITY_FORM_ELEMENT_TYPE;
-		$form_package->name      = $form[ 'id' ];
-		$form_package->title     = $form[ 'title' ];
+		$form_package->name      = $form['id'];
+		$form_package->title     = $form['title'];
+		$form_package->edit_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&id=%d', $form['id'] ) );
 
 		return $form_package;
 	}
