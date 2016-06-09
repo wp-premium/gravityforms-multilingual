@@ -1,54 +1,62 @@
-#1.3.8
+# 1.3.9
 
-##Fix
+## Features
+* [wpmltm-1189] Implement new design for translation editor.
+
+## Performances
+* [wpmlcore-2988] Removed unneeded dependencies checks in admin pages: this now runs only once and later only when activating/deactivating plugins
+
+# 1.3.8
+
+## Fix
 * [gfml-63] Fixed logic to limit string length
 * [gfml-57] Fixed issue when a field was removed, the related strings were not removed
 * [gfml-51] Previous and next buttons are now fully translatable
 
-#1.3.7
+# 1.3.7
 
-##Performances
+## Performances
 * [wpmlcore-2528] Cached calls to `glob()` function when auto loading classes
 
-##Compatibility
+## Compatibility
 * [gfml-33] Added compatibility with Quiz add-on (http://www.gravityforms.com/add-ons/quiz/)
 
-#1.3.5
+# 1.3.5
 * [gfml-58] Fix migration logic so string statuses are copied correctly
 
-#1.3.4
+# 1.3.4
 
-##Features
+## Features
 * [gfml-43] Added ability to change the language of a form
 
-##Fixes
+## Fixes
 * [gfml-56] Page titles strings in paginated forms are now properly registered
 
-#1.3.3
+# 1.3.3
 
-##Fixes
+## Fixes
 * Is now possible to translate all "choices" options (labels and values) of fields with this property
 
-#1.3.1
+# 1.3.1
 
-##New
+## New
 * Updated dependency check module
 
-#1.3.1
+# 1.3.1
 
-##New
+## New
 * Updated dependency check module
 
-#1.3
+# 1.3.0
 
 * Added support for Package Translation
 * Improved translation when default language is not English
 
-#1.2.2
+# 1.2.2
 
 * Added support for GF 1.9.x
 
-#1.2.1
+# 1.2.1
 
 * Fixed translating HTML content field type
 * Fixed translating option labels for radio, checkbox and select field types
@@ -57,12 +65,12 @@
 * Added filtering on WPML Translation Management Dashboard screen
 
 
-#1.2
+# 1.2.0
 
 * Fixed problem with translations of deleted fields
 * Fixed small issue with "Translation of this document is complete" checkbox (should not be checked in some cases)
 
-#1.0
+# 1.0.0
 
 * Add readme.txt
 * Add filter to translate error messages
