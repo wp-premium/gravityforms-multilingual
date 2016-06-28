@@ -5,7 +5,7 @@ Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multili
 Description: Add multilingual support for Gravity Forms
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.3.9
+Version: 1.3.10
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,12 +13,16 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.9' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.10' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
-require_once 'embedded/wpml/commons/autoloader.php';
-$wpml_auto_loader_instance = WPML_Auto_Loader::get_instance();
-$wpml_auto_loader_instance->register( GRAVITYFORMS_MULTILINGUAL_PATH . '/' );
+$autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/embedded';
+if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
+	$autoloader = $autoloader_dir . '/autoload.php';
+} else {
+	$autoloader = $autoloader_dir . '/autoload_52.php';
+}
+require_once $autoloader;
 
 add_action( 'wpml_gfml_has_requirements', 'load_gfml' );
 
