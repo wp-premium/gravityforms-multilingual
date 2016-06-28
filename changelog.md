@@ -1,3 +1,11 @@
+# 1.3.10
+
+## Fixes
+* [wpmlcore-3030] Class auto loading is not compatible with version of PHP older than 5.3
+
+## Performances
+* [wpmlga-133] Improved class autoloading by using class mapping, instead of file system lookup
+
 # 1.3.9
 
 ## Features
