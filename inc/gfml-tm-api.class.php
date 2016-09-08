@@ -12,7 +12,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 		$migrated = get_option( 'gfml_pt_migr_comp' );
 		if ( ! $migrated ) {
 			if ( $this->gravity_form_table_exists() && $this->has_post_gravity_from_translations() ) {
-				require 'gfml-migration.class.php';
+				require dirname( __FILE__ ) . '/gfml-migration.class.php';
 				$migration_object = new GFML_Migration( $this );
 				$migration_object->migrate();
 			}

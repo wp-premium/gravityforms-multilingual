@@ -1,3 +1,9 @@
+# 1.3.11
+
+## Fixes
+* [gfml-79] Fixed bug with post category field registration.
+* Other minor bug fixes
+
 # 1.3.10
 
 ## Fixes
