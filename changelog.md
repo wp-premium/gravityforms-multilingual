@@ -1,3 +1,12 @@
+# 1.3.12
+
+## Fixes
+* [gfml-76] The "Save and Continue Later" button can be properly translated.
+* [gfml-78] Fixed a fatal error occurring when registering strings with unicode characters.
+
+## Performances
+* [gfml-81] Removed the `GFML_TM_Legacy_API` class since the plugin requires at least WPML 3.5.0.
+
 # 1.3.11
 
 ## Fixes
