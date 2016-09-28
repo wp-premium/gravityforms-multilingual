@@ -736,6 +736,7 @@ abstract class Gravity_Forms_Multilingual {
 
 	private function get_global_strings(&$form, $st_context) {
 		$snh        = new GFML_String_Name_Helper();
+		
 		if ( isset( $form[ 'title' ] ) ) {
 			$form[ 'title' ] = icl_t( $st_context, $snh->get_form_title(), $form[ 'title' ] );
 		}
@@ -745,6 +746,9 @@ abstract class Gravity_Forms_Multilingual {
 		if ( isset( $form[ 'button' ][ 'text' ] ) ) {
 			$form[ 'button' ][ 'text' ] = icl_t( $st_context, $snh->get_form_submit_button(), $form[ 'button' ][ 'text' ] );
 		}
+		if ( isset( $form[ 'save' ][ 'button' ][ 'text' ] ) ) {
+            $form[ 'save' ][ 'button' ][ 'text' ] = icl_t( $st_context, $snh->get_form_save_and_continue_later_text(), $form[ 'save' ][ 'button' ][ 'text' ] );
+        }
 		$this->get_notifications($form, $st_context);
 		$this->get_confirmations($form, $st_context);
 	}

@@ -51,8 +51,8 @@ class GFML_String_Name_Helper {
 	public function sanitize_string( $string_name ) {
 		$max_length  = 128;
 		$string_name = preg_replace( '/[ \[\]]+/', '-', $string_name );
-		if ( strlen( $string_name ) > $max_length ) {
-			$string_name = substr( $string_name, 0, $max_length );
+		if ( mb_strlen( $string_name ) > $max_length ) {
+			$string_name = mb_substr( $string_name, 0, $max_length );
 		}
 
 		return $string_name;
@@ -160,6 +160,10 @@ class GFML_String_Name_Helper {
 
 	public function get_form_description() {
 		return $this->sanitize_string( "form_description" );
+	}
+
+	public function get_form_save_and_continue_later_text() {
+		return $this->sanitize_string( "form_save_and_continue_later_text" );
 	}
 
 }

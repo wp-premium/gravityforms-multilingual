@@ -32,13 +32,18 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 		return $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}rg_form'" ) === $wpdb->prefix . 'rg_form';
 	}
 
+	/**
+	 * @param string $source
+	 * @param int $max_length
+	 *
+	 * @return string
+	 */
 	private function trim_with_ellipsis( $source, $max_length ) {
-		if ( strlen( $source ) > $max_length ) {
-			$source_length = strlen( $source );
-			if($source_length > $max_length ) {
-				$offset = $max_length - 3;
-				$source = substr( $source, 0, $offset ) . '...';
-			}
+		$source_length = mb_strlen( $source );
+
+		if($source_length > $max_length ) {
+			$offset = $max_length - 3;
+			$source = mb_substr( $source, 0, $offset ) . '...';
 		}
 
 		return $source;
@@ -49,7 +54,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 
 		$form_field_key  = $this->trim_with_ellipsis($form_field_key, $max_length/3);
 		$field_title = '{' . $form_field[ 'id' ] . ':' . $form_field[ 'type' ] . '} ' . $form_field_key;
-		$current_length = strlen($field_title);
+		$current_length = mb_strlen($field_title);
 
 		if ( $current_length < $max_length && $sub_title && $sub_title != $form_field_key ) {
 			$sub_title_max_length = $max_length - ( $current_length + 3 );
@@ -62,7 +67,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 			}
 		}
 
-		if(strlen($field_title) > $max_length) {
+		if(mb_strlen($field_title) > $max_length) {
 			$field_title = $this->trim_with_ellipsis( $field_title, $max_length );
 		}
 
@@ -131,6 +136,11 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 			$string_title = 'Form submit button';
 			$this->register_gf_string( $form[ 'button' ][ 'text' ], $snh->get_form_submit_button(), $form_package, $string_title );
 		}
+
+		if(isset($form['save']['button']['text'])) {
+            $string_title = 'Save and Continue Later';
+            $this->register_gf_string( $form[ 'save' ][ 'button' ][ 'text' ], $snh->get_form_save_and_continue_later_text(), $form_package, $string_title );
+        }
 
 		$this->register_form_notifications($form_package, $form);
 		$this->register_form_confirmations($form_package, $form);
