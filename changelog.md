@@ -1,3 +1,9 @@
+# 1.3.13
+
+## Fixes
+* [gfml-87] Fixed GF date on TM dashboard
+* [gfml-75] Fix issue where radio choices with long text and html were not being displayed.
+
 # 1.3.12
 
 ## Fixes
