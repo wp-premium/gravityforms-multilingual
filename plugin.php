@@ -2,10 +2,10 @@
 /*
 Plugin Name: Gravity Forms Multilingual
 Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-3-5-2/">WPML 3.5.2 release notes</a>
+Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-1-3-13/">WPML 1.3.13 release notes</a>
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.3.12
+Version: 1.3.13
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,10 +13,10 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.12' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.13' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
-$autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/embedded';
+$autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
 if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
 	$autoloader = $autoloader_dir . '/autoload.php';
 } else {
@@ -30,7 +30,7 @@ new WPML_GFML_Requirements();
 
 function load_gfml() {
 	if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-		require GRAVITYFORMS_MULTILINGUAL_PATH . '/embedded/wpml/commons/src/dependencies/class-wpml-dependencies.php';
+		require GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor/wpml/commons/src/dependencies/class-wpml-dependencies.php';
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gfml-string-name-helper.class.php';
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gravity-forms-multilingual.class.php';
 

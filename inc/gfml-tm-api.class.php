@@ -18,6 +18,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 			}
 			update_option( 'gfml_pt_migr_comp', true );
 		}
+		add_filter( 'wpml_tm_dashboard_date',   array( $this, 'set_gfml_date_on_tm_dashboard' ), 10, 3 );
 	}
 
 	public function gform_post_update_form_meta_action() {
@@ -469,5 +470,15 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 			$form = RGFormsModel::get_form_meta( $id );
 			$this->update_form_translations( $form, true );
 		}
+	}
+
+	public function set_gfml_date_on_tm_dashboard( $current_time, $form_id, $type ) {
+		$date = $current_time;
+		if ( 'package_' . $this->get_type() === $type && class_exists( 'GFAPI' ) ) {
+			$form = GFAPI::get_form( $form_id );
+			$date = strtotime( $form['date_created'] );
+		}
+
+		return $date;
 	}
 }
