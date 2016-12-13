@@ -79,11 +79,13 @@ class GFML_String_Name_Helper {
 	}
 
 	public function get_field_multi_input_choice_text() {
-		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$this->field_choice['text']}" );
+		$sanitized_value = sanitize_text_field( $this->field_choice['text'] );
+		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$sanitized_value}" );
 	}
 
 	public function get_field_multi_input_choice_value() {
-		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$this->field_choice['text']}-value" );
+		$sanitized_value = sanitize_text_field( $this->field_choice['text'] );
+		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$sanitized_value}-value" );
 	}
 
 	public function get_form_confirmation_message() {
