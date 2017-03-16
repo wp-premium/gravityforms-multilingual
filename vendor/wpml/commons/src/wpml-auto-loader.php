@@ -55,8 +55,8 @@ if ( ! class_exists( 'WPML_Auto_Loader' ) ) {
 					$file = $this->get_file_from_name( $class, 'class' );
 				}
 			}
-			if ( self::is_accepted_interface( $class ) ) {
-				$file = self::get_file_from_name( $class, 'interface' );
+			if ( $this->is_accepted_interface( $class ) ) {
+				$file = $this->get_file_from_name( $class, 'interface' );
 			}			
 
 			return $file;
@@ -98,8 +98,9 @@ if ( ! class_exists( 'WPML_Auto_Loader' ) ) {
 
 		/**
 		 * @param string $class
+		 * @param string $prefix
 		 *
-		 * @return string|null
+		 * @return null|string
 		 */
 		private function get_file_from_name( $class, $prefix ) {
 			$file      = null;
@@ -148,10 +149,9 @@ if ( ! class_exists( 'WPML_Auto_Loader' ) ) {
 			$found_file = false;
 
 			foreach ( $base_dirs as $base_dir ) {
+				$current_dir = $base_dir;
 				if ( ! $deep ) {
 					$current_dir = $this->build_dir( $base_dir, $path, true );
-				} else {
-					$current_dir = $base_dir;    
 				}
 				$possible_full_path = $current_dir . '/' . $file_name;
 				if ( is_file( $possible_full_path ) ) {
@@ -162,7 +162,7 @@ if ( ! class_exists( 'WPML_Auto_Loader' ) ) {
 						$this->glob_cache[ $current_dir ] = glob( $current_dir . '/*', GLOB_ONLYDIR );
 						$this->glob_cache[ $current_dir ] = false === $this->glob_cache[ $current_dir ] ? array() : $this->glob_cache[ $current_dir ];
 					}
-					foreach ( $this->glob_cache[ $current_dir ] as $sub_folder_path ) {
+					foreach ( (array) $this->glob_cache[ $current_dir ] as $sub_folder_path ) {
 						$found_file = $this->get_file_from_path( $file_name, $sub_folder_path, true );
 						if ( null !== $found_file ) {
 							$file = $found_file;
@@ -178,7 +178,7 @@ if ( ! class_exists( 'WPML_Auto_Loader' ) ) {
 			return $file;
 		}
 
-		public function register( $base_dir, $accepted_prefixes = array( 'WPML' ), $classes_base_folder = 'classes', $include_root = false, $prepend = false ) {
+		public function register( $base_dir, array $accepted_prefixes = array( 'WPML' ), $classes_base_folder = 'classes', $include_root = false, $prepend = false ) {
 			$this->add_base_dir( $base_dir );
 			$this->accepted_prefixes   = $accepted_prefixes;
 			$this->classes_base_folder = $classes_base_folder;

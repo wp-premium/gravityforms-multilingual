@@ -1,3 +1,7 @@
+# 1.3.14
+
+* [gfml-29] Fixed order of country fields in translated pages.
+
 # 1.3.13
 
 ## Fixes

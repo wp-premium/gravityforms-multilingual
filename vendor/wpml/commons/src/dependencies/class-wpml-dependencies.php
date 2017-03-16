@@ -143,7 +143,7 @@ if ( ! class_exists( 'WPML_Dependencies' ) ) {
 			update_option( $this->data_key . 'installed_plugins', $this->installed_plugins );
 		}
 
-		private function init_bundle( $active_plugins ) {
+		private function init_bundle( array $active_plugins ) {
 
 			foreach ( $active_plugins as $plugin_file ) {
 				$filename = dirname( $plugin_file ) . '/wpml-dependencies.json';
@@ -169,7 +169,7 @@ if ( ! class_exists( 'WPML_Dependencies' ) ) {
 			}
 		}
 
-		private function set_expected_versions( $bundle ) {
+		private function set_expected_versions( array $bundle ) {
 			foreach ( $bundle as $plugin => $version ) {
 				if ( ! array_key_exists( $plugin, $this->expected_versions ) ) {
 					$this->expected_versions[ $plugin ] = $version;

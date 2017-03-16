@@ -4,22 +4,8 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432
+class ComposerStaticInitfa132d7f11dd5ea1d978c5509708d93a
 {
-    public static $prefixLengthsPsr4 = array (
-        'C' => 
-        array (
-            'Composer\\Installers\\' => 20,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Composer\\Installers\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
-        ),
-    );
-
     public static $prefixesPsr0 = array (
         'x' => 
         array (
@@ -43,21 +29,27 @@ class ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432
         'GFML_TM_API' => __DIR__ . '/../..' . '/inc/gfml-tm-api.class.php',
         'Gravity_Forms_Multilingual' => __DIR__ . '/../..' . '/inc/gravity-forms-multilingual.class.php',
         'WPML_Auto_Loader' => __DIR__ . '/..' . '/wpml/commons/src/wpml-auto-loader.php',
+        'WPML_Cache_Directory' => __DIR__ . '/..' . '/wpml/commons/src/cache/class-wpml-cache-directory.php',
         'WPML_Dependencies' => __DIR__ . '/..' . '/wpml/commons/src/dependencies/class-wpml-dependencies.php',
         'WPML_GFML_AutoLoader' => __DIR__ . '/../..' . '/lib/wpml-gfml-autoloader.class.php',
+        'WPML_GFML_Filter_Country_Field' => __DIR__ . '/../..' . '/classes/wpml-gfml-filter-country-field.php',
         'WPML_GFML_Filter_Field_Meta' => __DIR__ . '/../..' . '/classes/class-wpml-gfml-filter-field-meta.php',
         'WPML_GFML_Requirements' => __DIR__ . '/../..' . '/classes/class-wpml-gfml-requirements.php',
         'WPML_GF_Quiz' => __DIR__ . '/../..' . '/classes/compatibility/quiz/class-wpml-gf-quiz.php',
-        'WPML_Twig_WP_Plugin_Extension' => __DIR__ . '/..' . '/wpml/commons/src/twig-extensions/wpml-twig-wp-plugin-extension.php',
+        'WPML_Notice' => __DIR__ . '/..' . '/wpml/commons/src/notices/class-wpml-notice.php',
+        'WPML_Notice_Action' => __DIR__ . '/..' . '/wpml/commons/src/notices/class-wpml-notice-action.php',
+        'WPML_Notice_Render' => __DIR__ . '/..' . '/wpml/commons/src/notices/class-wpml-notice-render.php',
+        'WPML_Notices' => __DIR__ . '/..' . '/wpml/commons/src/notices/class-wpml-notices.php',
+        'WPML_Templates_Factory' => __DIR__ . '/..' . '/wpml/commons/src/templating/class-wpml-templates-factory.php',
+        'WPML_Twig_WP_Plugin_Extension' => __DIR__ . '/..' . '/wpml/commons/src/twig/twig-extensions/wpml-twig-wp-plugin-extension.php',
+        'WPML_WP_API' => __DIR__ . '/..' . '/wpml/commons/src/wpml-wp/class-wpml-wp-api.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit2c8d0908f316ea95e90eb776f5f39432::$classMap;
+            $loader->prefixesPsr0 = ComposerStaticInitfa132d7f11dd5ea1d978c5509708d93a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfa132d7f11dd5ea1d978c5509708d93a::$classMap;
 
         }, null, ClassLoader::class);
     }
