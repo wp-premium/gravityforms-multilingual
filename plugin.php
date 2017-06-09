@@ -2,10 +2,10 @@
 /*
 Plugin Name: Gravity Forms Multilingual
 Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-1-3-14/">WPML 1.3.14 release notes</a>
+Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-1-3-15/">WPML 1.3.15 release notes</a>
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.3.14
+Version: 1.3.15
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,7 +13,7 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.14' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.15' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
 $autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
@@ -77,3 +77,6 @@ function wpml_gf_quiz_init( $gfml_tm_api ) {
 	new WPML_GF_Quiz( $gfml_tm_api );
 }
 add_action( 'wpml_gfml_tm_api_loaded', 'wpml_gf_quiz_init' );
+
+$wpml_gfml_activation = new WPML_GFML_Plugin_Activation();
+$wpml_gfml_activation->register_callback();
