@@ -2,10 +2,10 @@
 /*
 Plugin Name: Gravity Forms Multilingual
 Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-1-3-13/">WPML 1.3.13 release notes</a>
+Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/wpml-1-3-15/">WPML 1.3.15 release notes</a>
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.3.13
+Version: 1.3.15
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,7 +13,7 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.13' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.3.15' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
 $autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
@@ -30,7 +30,6 @@ new WPML_GFML_Requirements();
 
 function load_gfml() {
 	if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
-		require GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor/wpml/commons/src/dependencies/class-wpml-dependencies.php';
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gfml-string-name-helper.class.php';
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gravity-forms-multilingual.class.php';
 
@@ -40,6 +39,10 @@ function load_gfml() {
 		global $sitepress;
 		$current_language = $sitepress->get_current_language();
 		new WPML_GFML_Filter_Field_Meta( $current_language );
+
+		$wpml_gfml_filter_country_field = new WPML_GFML_Filter_Country_Field();
+		$wpml_gfml_filter_country_field->add_hooks();
+
 		do_action( 'wpml_gfml_tm_api_loaded', $GLOBALS['wpml_gfml_tm_api'] );
 	}
 }
@@ -74,3 +77,6 @@ function wpml_gf_quiz_init( $gfml_tm_api ) {
 	new WPML_GF_Quiz( $gfml_tm_api );
 }
 add_action( 'wpml_gfml_tm_api_loaded', 'wpml_gf_quiz_init' );
+
+$wpml_gfml_activation = new WPML_GFML_Plugin_Activation();
+$wpml_gfml_activation->register_callback();
