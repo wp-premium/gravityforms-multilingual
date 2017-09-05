@@ -2,6 +2,9 @@
 
 class GFML_String_Name_Helper {
 
+	const SANITIZE_STRING_MAX_LENGTH = 128;
+	const CHOICE_VALUE_SUFFIX        = '-value';
+
 	public $field_choice;
 	public $field_choice_index;
 	public $confirmation;
@@ -48,8 +51,7 @@ class GFML_String_Name_Helper {
 		return $string_name_parts;
 	}
 
-	public function sanitize_string( $string_name ) {
-		$max_length  = 128;
+	public function sanitize_string( $string_name, $max_length = self::SANITIZE_STRING_MAX_LENGTH ) {
 		$string_name = preg_replace( '/[ \[\]]+/', '-', $string_name );
 		if ( mb_strlen( $string_name ) > $max_length ) {
 			$string_name = mb_substr( $string_name, 0, $max_length );
@@ -80,12 +82,14 @@ class GFML_String_Name_Helper {
 
 	public function get_field_multi_input_choice_text() {
 		$sanitized_value = sanitize_text_field( $this->field_choice['text'] );
-		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$sanitized_value}" );
+		return $this->sanitize_string(
+			"{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$sanitized_value}",
+			self::SANITIZE_STRING_MAX_LENGTH - mb_strlen( self::CHOICE_VALUE_SUFFIX )
+		);
 	}
 
 	public function get_field_multi_input_choice_value() {
-		$sanitized_value = sanitize_text_field( $this->field_choice['text'] );
-		return $this->sanitize_string( "{$this->field->type}-{$this->field->id}-choice-{$this->field_choice_index}-{$sanitized_value}-value" );
+		return $this->get_field_multi_input_choice_text() . self::CHOICE_VALUE_SUFFIX;
 	}
 
 	public function get_form_confirmation_message() {
