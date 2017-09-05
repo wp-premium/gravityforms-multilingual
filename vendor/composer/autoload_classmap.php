@@ -17,6 +17,7 @@ return array(
     'WPML_GFML_Plugin_Activation' => $baseDir . '/classes/class-wpml-gfml-plugin-activation.php',
     'WPML_GFML_Requirements' => $baseDir . '/classes/class-wpml-gfml-requirements.php',
     'WPML_GF_Quiz' => $baseDir . '/classes/compatibility/quiz/class-wpml-gf-quiz.php',
+    'WPML_GF_Survey' => $baseDir . '/classes/compatibility/survey/wpml-gf-survey.php',
     'xrstf\\Composer52\\AutoloadGenerator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/AutoloadGenerator.php',
     'xrstf\\Composer52\\Generator' => $vendorDir . '/xrstf/composer-php52/lib/xrstf/Composer52/Generator.php',
 );
