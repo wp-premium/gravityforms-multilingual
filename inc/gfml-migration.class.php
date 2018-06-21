@@ -14,7 +14,7 @@ class GFML_Migration{
     public function migrate() {
         global $wpdb;
 
-        $form_ids = $wpdb->get_col ( "SELECT id FROM {$wpdb->prefix}rg_form" );
+        $form_ids = $wpdb->get_col ( "SELECT id FROM {$this->tm_api->get_forms_table_name()}" );
         foreach ( $form_ids as $id ) {
             $form = RGFormsModel::get_form_meta ( $id, true );
             $this->tm_api->update_form_translations ( $form, true );

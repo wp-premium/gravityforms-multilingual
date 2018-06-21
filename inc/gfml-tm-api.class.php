@@ -28,9 +28,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 	}
 
 	private function gravity_form_table_exists() {
-		global $wpdb;
-
-		return $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}rg_form'" ) === $wpdb->prefix . 'rg_form';
+		return (bool) $this->get_forms_table_name();
 	}
 
 	/**
@@ -233,35 +231,35 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 
 	protected function register_strings_field_post_custom( $form_package, $form_field ) {
 		// TODO if multi options - 'choices' (register and translate) 'inputType' => select, etc.
-		if ( $form_field->customFieldTemplate != '' ) {
-			$snh        = new GFML_String_Name_Helper();
-			$snh->field = $form_field;
-
-			$string_name = $snh->get_field_post_custom_field();
-			$string_title = $this->build_string_title($form_field, $form_field['label']);
-			$this->register_gf_string( $form_field->customFieldTemplate, $string_name, $form_package, $string_title );
-		}
+		$this->register_string_field_property( $form_package, $form_field, 'customFieldTemplate', 'get_field_post_custom_field' );
 	}
 
 	protected function register_strings_field_post_category( $form_package, $form_field ) {
 		// TODO if multi options - 'choices' have static values (register and translate) 'inputType' => select, etc.
-		if ( $form_field->categoryInitialItem != '' ) {
-			$snh        = new GFML_String_Name_Helper();
-			$snh->field = $form_field;
+		$this->register_string_field_property( $form_package, $form_field, 'categoryInitialItem', 'get_field_post_category' );
+	}
 
-			$string_name = $snh->get_field_post_category();
-			$string_title = $this->build_string_title($form_field, $form_field['label']);
-			$this->register_gf_string( $form_field->categoryInitialItem, $string_name, $form_package, $string_title );
-		}
+	protected function register_strings_field_address( $form_package, $form_field ) {
+		$this->register_string_field_property( $form_package, $form_field, 'copyValuesOptionLabel', 'get_field_address_copy_values_option' );
 	}
 
 	protected function register_strings_field_html( $form_package, $form_field ) {
-		$snh        = new GFML_String_Name_Helper();
-		$snh->field = $form_field;
+		$this->register_string_field_property( $form_package, $form_field, 'content', 'get_field_html', 'AREA' );
+	}
 
-		$string_name = $snh->get_field_html();
-		$string_title = $this->build_string_title($form_field, $form_field['label']);
-		$this->register_gf_string( $form_field->content, $string_name, $form_package, $string_title, 'AREA' );
+	protected function register_string_field_property( $form_package, $form_field, $field_property, $string_helper_function_name, $string_kind = 'LINE' ) {
+		if ( ! empty( $form_field->{$field_property} ) ) {
+			$snh        = new GFML_String_Name_Helper();
+			$snh->field = $form_field;
+
+			if ( ! method_exists( $snh, $string_helper_function_name ) ) {
+				return;
+			}
+
+			$string_name  = call_user_func( array( $snh, $string_helper_function_name ) );
+			$string_title = $this->build_string_title( $form_field, $form_field['label'] );
+			$this->register_gf_string( $form_field->{$field_property}, $string_name, $form_package, $string_title, $string_kind );
+		}
 	}
 
 	public function register_strings_field_option( $form_package, $form_field ) {
@@ -304,6 +302,9 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 					break;
 				case 'post_category':
 					$this->register_strings_field_post_category( $form_package, $form_field );
+					break;
+				case 'address':
+					$this->register_strings_field_address( $form_package, $form_field );
 					break;
 				default:
 					do_action( "wpml_gf_register_strings_field_{$form_field->type}", $form, $form_package, $form_field );
@@ -459,7 +460,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 		global $wpdb;
 
 		$post_gravity_from_translations_query = $wpdb->prepare( "SELECT rgf.id
-			FROM {$wpdb->prefix}rg_form rgf
+			FROM {$this->get_forms_table_name()} rgf
 			LEFT JOIN {$wpdb->prefix}icl_translations iclt
 				ON rgf.id = iclt.element_id
 					AND iclt.element_type = %s

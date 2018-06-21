@@ -17,8 +17,12 @@ define( 'ICL_GRAVITY_FORM_ELEMENT_TYPE', 'gravity_form' );
  */
 abstract class Gravity_Forms_Multilingual {
 
+	const FORMS_TABLE        = 'gf_form';
+	const LEGACY_FORMS_TABLE = 'rg_form';
+
 	protected $_current_forms;
 	protected $form_fields;
+	private $forms_table_name;
 
 	/**
 	 * Registers filters and hooks.
@@ -91,7 +95,7 @@ abstract class Gravity_Forms_Multilingual {
 	function get_link( $item, $id, $anchor ) {
 		if ( $item == "" && $id = $this->gform_id( $id ) && false === $anchor ) {
 			global $wpdb;
-			$anchor = $wpdb->get_var( $wpdb->prepare( "SELECT title FROM {$wpdb->prefix}rg_form WHERE id = %d", $id ) );
+			$anchor = $wpdb->get_var( $wpdb->prepare( "SELECT title FROM {$this->get_forms_table_name()} WHERE id = %d", $id ) );
 			$item   = $anchor ? sprintf( '<a href="%s">%s</a>', 'admin.php?page=gf_edit_forms&id=' . $id, $anchor ) : "";
 		}
 
@@ -718,6 +722,15 @@ abstract class Gravity_Forms_Multilingual {
 						$field->categoryInitialItem = icl_t( $st_context, $snh->get_field_post_category(), $field->categoryInitialItem );
 					}
 					break;
+				case 'address':
+					if ( ! empty( $field->copyValuesOptionLabel ) ) {
+						$field->copyValuesOptionLabel = icl_t(
+							$st_context,
+							$snh->get_field_address_copy_values_option(),
+							$field->copyValuesOptionLabel
+						);
+					}
+					break;
 			}
 
 			if ( isset($field->choices) && is_array( $field->choices ) ) {
@@ -1008,5 +1021,27 @@ abstract class Gravity_Forms_Multilingual {
 		$this->update_form_translations( $form, false );
 
 		return $confirmation;
+	}
+
+	/**
+	 * @return string|false
+	 */
+	public function get_forms_table_name() {
+		global $wpdb;
+
+		if ( null !== $this->forms_table_name ) {
+			return $this->forms_table_name;
+		}
+
+		$this->forms_table_name = false;
+
+		foreach ( array( self::FORMS_TABLE, self::LEGACY_FORMS_TABLE ) as $name ) {
+			if ( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}{$name}'" ) === $wpdb->prefix . $name ) {
+				$this->forms_table_name = $wpdb->prefix . $name;
+				break;
+			}
+		}
+
+		return $this->forms_table_name;
 	}
 }
