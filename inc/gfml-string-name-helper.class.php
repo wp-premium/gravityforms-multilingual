@@ -64,6 +64,10 @@ class GFML_String_Name_Helper {
 		return $this->sanitize_string( "field-{$this->field->id}-categoryInitialItem" );
 	}
 
+	public function get_field_address_copy_values_option() {
+		return $this->sanitize_string( "field-{$this->field->id}-copyValuesOptionLabel" );
+	}
+
 	public function get_field_post_custom_field() {
 		return $this->sanitize_string( "field-{$this->field->id}-customFieldTemplate" );
 	}
