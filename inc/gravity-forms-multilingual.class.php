@@ -49,6 +49,7 @@ abstract class Gravity_Forms_Multilingual {
 		add_filter( 'gform_notification', array( $this, 'gform_notification' ), 10, 2 );
 		add_filter( 'gform_field_validation', array( $this, 'gform_field_validation' ), 10, 4 );
 		add_filter( 'gform_merge_tag_filter', array( $this, 'gform_merge_tag_filter' ), 10, 5 );
+		add_filter( 'gform_pre_replace_merge_tags', array( $this, 'gform_pre_replace_merge_tags' ), 100, 2  );
 
 		/* GF admin hooks for updating WPML translation jobs */
 		add_action( 'gform_after_save_form', array( $this, 'update_form_translations' ), 10, 2 );
@@ -731,6 +732,26 @@ abstract class Gravity_Forms_Multilingual {
 						);
 					}
 					break;
+				case 'name':
+					if ( isset( $field->inputs ) ) {
+						foreach ( $field->inputs as $input_index => $input ) {
+							if ( isset( $input['choices'] ) ) {
+								foreach ( $input['choices'] as $choice_index => $choice ) {
+									if ( isset( $choice['text'] ) ) {
+										do_action( 'wpml_register_single_string', 'gfml_prefix_name_choices', 'text_' . $choice['text'], $choice['text'] );
+										$field->inputs[$input_index]['choices'][$choice_index]['text'] =
+											apply_filters( 'wpml_translate_single_string', $choice['text'], 'gfml_prefix_name_choices', 'text_' . $choice['text'] );
+									}
+									if ( isset($choice['value'] ) ) {
+										do_action( 'wpml_register_single_string', 'gfml_prefix_name_choices', 'value_' . $choice['value'], $choice['value'] );
+										$field->inputs[$input_index]['choices'][$choice_index]['value'] =
+											apply_filters( 'wpml_translate_single_string', $choice['value'], 'gfml_prefix_name_choices', 'value_' . $choice['value'] );
+									}
+								}
+							}
+						}
+					}
+					break;
 			}
 
 			if ( isset($field->choices) && is_array( $field->choices ) ) {
@@ -1043,5 +1064,53 @@ abstract class Gravity_Forms_Multilingual {
 		}
 
 		return $this->forms_table_name;
+	}
+
+	/**
+	 * @param string $text
+	 * @param array $form
+	 *
+	 * @return string
+	 */
+	public function gform_pre_replace_merge_tags( $text, $form ){
+
+		if( isset( $form['confirmation'] ) && $text === rgar( $form['confirmation'], 'message' ) ){
+			$text = $this->get_translated_confirmation_message( $form, $form['confirmation'] );
+		}elseif( isset( $_POST['gform_resume_token'] ) && isset( $_POST['gform_resume_email'] ) && isset( $form['confirmation'] ) ){
+			$resume_token = $_POST['gform_resume_token'];
+			$resume_email = $_POST['gform_resume_email'];
+			$confirmation_message = GFFormDisplay::replace_save_variables( rgar( $form['confirmation'], 'message' ), $form, $resume_token, $resume_email );
+			$confirmation_message = '<div class="form_saved_message_sent"><span>' . $confirmation_message . '</span></div>';;
+
+			if( $text === $confirmation_message ){
+				foreach( $form['confirmations'] as $resume_token => $confirmation ){
+					if( isset( $confirmation['event'] ) && 'form_save_email_sent' === $confirmation['event'] ){
+						$form['confirmations'][$resume_token]['message'] = $this->get_translated_confirmation_message( $form, $confirmation );
+					}
+				}
+
+				if( isset( $form['confirmation']) && 'form_save_email_sent' === $form['confirmation']['event'] ){
+					$form['confirmation']['message'] =  $this->get_translated_confirmation_message( $form, $form['confirmation'] );
+				}
+
+				$text = GFFormDisplay::replace_save_variables( $form['confirmation']['message'], $form, $resume_token, $resume_email );
+				$text = '<div class="form_saved_message_sent"><span>' . $text . '</span></div>';;
+			}
+		}
+
+		return $text;
+	}
+
+	/**
+	 * @param array $form
+	 * @param array $confirmation
+	 *
+	 * @return string
+	 */
+	private function get_translated_confirmation_message( $form , $confirmation ){
+		$st_context                       = $this->get_st_context( $form['id'] );
+		$string_name_helper               = new GFML_String_Name_Helper();
+		$string_name_helper->confirmation = $confirmation;
+		return icl_t( $st_context, $string_name_helper->get_form_confirmation_message(), $confirmation[ 'message' ] );
 	}
 }
