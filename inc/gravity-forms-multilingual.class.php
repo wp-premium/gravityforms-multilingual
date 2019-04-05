@@ -24,6 +24,8 @@ abstract class Gravity_Forms_Multilingual {
 	protected $form_fields;
 	private $forms_table_name;
 
+	private $forms_to_update_on_shutdown = array();
+
 	/**
 	 * Registers filters and hooks.
 	 * Called on 'init' hook at default priority.
@@ -57,6 +59,7 @@ abstract class Gravity_Forms_Multilingual {
 		add_action( 'gform_pre_notification_save', array( $this, 'update_notifications_translations' ), 10, 2 );
 		add_action( 'gform_after_delete_form', array( $this, 'after_delete_form' ) );
 		add_action( 'gform_after_delete_field', array( $this, 'after_delete_field' ), 10, 2 );
+		add_action( 'shutdown', array( $this, 'update_form_translations_on_shutdown' ) );
 		
 		global $pagenow;
 	
@@ -1024,7 +1027,7 @@ abstract class Gravity_Forms_Multilingual {
 	 */
 	function update_notifications_translations( $notification, $form ) {
 
-		$this->update_form_translations( $form, false );
+		$this->add_form_to_shutdown_list( $form );
 
 		return $notification;
 	}
@@ -1039,9 +1042,15 @@ abstract class Gravity_Forms_Multilingual {
 	 */
 	function update_confirmation_translations( $confirmation, $form ) {
 
-		$this->update_form_translations( $form, false );
+		$this->add_form_to_shutdown_list( $form );
 
 		return $confirmation;
+	}
+
+	private function add_form_to_shutdown_list( $form ) {
+		if ( ! in_array( $form['id'], $this->forms_to_update_on_shutdown, true ) ) {
+			$this->forms_to_update_on_shutdown[] = $form['id'];
+		}
 	}
 
 	/**
@@ -1112,5 +1121,12 @@ abstract class Gravity_Forms_Multilingual {
 		$string_name_helper               = new GFML_String_Name_Helper();
 		$string_name_helper->confirmation = $confirmation;
 		return icl_t( $st_context, $string_name_helper->get_form_confirmation_message(), $confirmation[ 'message' ] );
+	}
+
+	public function update_form_translations_on_shutdown() {
+		foreach ( $this->forms_to_update_on_shutdown as $form_id ) {
+			$form = RGFormsModel::get_form_meta( $form_id );
+			$this->update_form_translations( $form, false );
+		}
 	}
 }

@@ -2,10 +2,10 @@
 /*
 Plugin Name: Gravity Forms Multilingual
 Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-4-0/">Gravity Forms Multilingual 1.4.0 release notes</a>
+Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-5-0/">Gravity Forms Multilingual 1.5.0 release notes</a>
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.4.0
+Version: 1.5.0
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,7 +13,7 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.4.0' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.5.0' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
 $autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
