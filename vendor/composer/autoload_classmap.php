@@ -6,6 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'GFML_Conditional_Logic' => $baseDir . '/classes/class-gfml-conditional-logic.php',
+    'GFML_Form' => $baseDir . '/classes/class-gfml-form.php',
+    'GFML_Hooks' => $baseDir . '/classes/class-gfml-hooks.php',
     'GFML_Migration' => $baseDir . '/inc/gfml-migration.class.php',
     'GFML_String_Name_Helper' => $baseDir . '/inc/gfml-string-name-helper.class.php',
     'GFML_TM_API' => $baseDir . '/inc/gfml-tm-api.class.php',
