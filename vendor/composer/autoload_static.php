@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0cbd45b9baa4fa914fe4a20e4e11b225
+class ComposerStaticInit0f11e33388d808b907fc12e83e54e39a
 {
     public static $prefixesPsr0 = array (
         'x' => 
@@ -17,6 +17,9 @@ class ComposerStaticInit0cbd45b9baa4fa914fe4a20e4e11b225
     );
 
     public static $classMap = array (
+        'GFML_Conditional_Logic' => __DIR__ . '/../..' . '/classes/class-gfml-conditional-logic.php',
+        'GFML_Form' => __DIR__ . '/../..' . '/classes/class-gfml-form.php',
+        'GFML_Hooks' => __DIR__ . '/../..' . '/classes/class-gfml-hooks.php',
         'GFML_Migration' => __DIR__ . '/../..' . '/inc/gfml-migration.class.php',
         'GFML_String_Name_Helper' => __DIR__ . '/../..' . '/inc/gfml-string-name-helper.class.php',
         'GFML_TM_API' => __DIR__ . '/../..' . '/inc/gfml-tm-api.class.php',
@@ -34,8 +37,8 @@ class ComposerStaticInit0cbd45b9baa4fa914fe4a20e4e11b225
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixesPsr0 = ComposerStaticInit0cbd45b9baa4fa914fe4a20e4e11b225::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0cbd45b9baa4fa914fe4a20e4e11b225::$classMap;
+            $loader->prefixesPsr0 = ComposerStaticInit0f11e33388d808b907fc12e83e54e39a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit0f11e33388d808b907fc12e83e54e39a::$classMap;
 
         }, null, ClassLoader::class);
     }

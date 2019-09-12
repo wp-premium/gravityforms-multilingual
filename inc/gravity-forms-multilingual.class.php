@@ -26,11 +26,20 @@ abstract class Gravity_Forms_Multilingual {
 
 	private $forms_to_update_on_shutdown = array();
 
+	private $field_keys = array(
+		'label',
+		'checkboxLabel',
+		'adminLabel',
+		'description',
+		'defaultValue',
+		'errorMessage',
+	);
+
 	/**
 	 * Registers filters and hooks.
 	 * Called on 'init' hook at default priority.
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->_current_forms = array();
 		$this->form_fields    = array();
 
@@ -60,26 +69,26 @@ abstract class Gravity_Forms_Multilingual {
 		add_action( 'gform_after_delete_form', array( $this, 'after_delete_form' ) );
 		add_action( 'gform_after_delete_field', array( $this, 'after_delete_field' ), 10, 2 );
 		add_action( 'shutdown', array( $this, 'update_form_translations_on_shutdown' ) );
-		
+
 		global $pagenow;
-	
+
 		if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) &&
 			$_GET['page'] == 'gf_edit_forms' && isset( $_GET['id'] ) ) {
-			
+
 			$form_id = $_GET['id'];
-			$form    = RGFormsModel::get_form_meta( $form_id );			
+			$form    = RGFormsModel::get_form_meta( $form_id );
 			$package = $this->get_form_package( $form );
-			
+
 			do_action( 'wpml_show_package_language_admin_bar', $package );
 		}
-		
+
 	}
 
-	protected abstract function get_type();
+	public abstract function get_type();
 
 	public abstract function get_st_context( $form );
 
-	protected abstract function update_form_translations( $form_meta, $is_new, $needs_update = true );
+	public abstract function update_form_translations( $form_meta, $is_new, $needs_update = true );
 
 	public abstract function after_delete_form( $form_id );
 
@@ -186,19 +195,10 @@ abstract class Gravity_Forms_Multilingual {
 
 	/**
 	 * Returns an array of keys under which a Gravity Form Field array stores translatable strings
-	 * @return Array
+	 * @return array
 	 */
-	protected function _get_field_keys() {
-		if ( ! isset( $this->_field_keys ) ) {
-			$this->_field_keys = array(
-				'label',
-				'adminLabel',
-				'description',
-				'defaultValue',
-				'errorMessage'
-			);
-		}
-		$this->form_fields = apply_filters( 'gform_multilingual_field_keys', $this->_field_keys );
+	public function get_field_keys() {
+		$this->form_fields = apply_filters( 'gform_multilingual_field_keys', $this->field_keys );
 
 		return $this->form_fields;
 	}
@@ -246,7 +246,7 @@ abstract class Gravity_Forms_Multilingual {
 		}
 
 		//Fields (including paging fields)
-		$keys = $this->_get_field_keys();
+		$keys = $this->get_field_keys();
 
 		foreach ( $form[ 'fields' ] as $id => $field ) {
 			$snh->field = $field;
@@ -392,7 +392,7 @@ abstract class Gravity_Forms_Multilingual {
 		}
 
 		// Common field properties
-		$keys = $this->_get_field_keys();
+		$keys = $this->get_field_keys();
 
 		// Fields
 		foreach ( $form[ 'fields' ] as $id => $field ) {
@@ -545,7 +545,7 @@ abstract class Gravity_Forms_Multilingual {
 		}
 
 		//Fields (including paging fields)
-		$keys = $this->_get_field_keys();
+		$keys = $this->get_field_keys();
 
 		foreach ( $form[ 'fields' ] as $id => $field ) {
 
@@ -683,10 +683,15 @@ abstract class Gravity_Forms_Multilingual {
 		}
 
 		// Common field properties
-		$keys = $this->_get_field_keys();
+		$keys = $this->get_field_keys();
+
+		$conditional_logic = new GFML_Conditional_Logic();
+
+		$form = $conditional_logic->translate_conditional_logic( $form, $st_context );
 
 		// Filter form fields (array of GF_Field objects)
-		foreach ( $form[ 'fields' ] as $id => &$field ) {
+		foreach ( $form['fields'] as $id => &$field ) {
+
 
 			$snh->field = $field;
 
@@ -770,10 +775,9 @@ abstract class Gravity_Forms_Multilingual {
 		return $form;
 	}
 
-
 	private function get_global_strings(&$form, $st_context) {
 		$snh        = new GFML_String_Name_Helper();
-		
+
 		if ( isset( $form[ 'title' ] ) ) {
 			$form[ 'title' ] = icl_t( $st_context, $snh->get_form_title(), $form[ 'title' ] );
 		}
