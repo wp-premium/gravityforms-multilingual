@@ -2,10 +2,10 @@
 /*
 Plugin Name: Gravity Forms Multilingual
 Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-5-0/">Gravity Forms Multilingual 1.5.0 release notes</a>
+Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-5-1/">Gravity Forms Multilingual 1.5.1 release notes</a>
 Author: OnTheGoSystems
 Author URI: http://www.onthegosystems.com/
-Version: 1.5.0
+Version: 1.5.1
 Plugin Slug: gravityforms-multilingual
 */
 
@@ -13,7 +13,7 @@ if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.5.0' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.5.1' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
 $autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
@@ -34,7 +34,12 @@ function load_gfml() {
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gravity-forms-multilingual.class.php';
 
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gfml-tm-api.class.php';
-		$GLOBALS['wpml_gfml_tm_api'] = new GFML_TM_API();
+
+		$api                         = new GFML_TM_API();
+		$GLOBALS['wpml_gfml_tm_api'] = $api;
+
+		$hooks = new GFML_Hooks( $api );
+		$hooks->init();
 
 		global $sitepress;
 		$current_language = $sitepress->get_current_language();
