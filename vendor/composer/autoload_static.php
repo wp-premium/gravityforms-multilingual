@@ -4,18 +4,8 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit0f11e33388d808b907fc12e83e54e39a
+class ComposerStaticInit59c82f7e550943a2b70b6dfdd180df68
 {
-    public static $prefixesPsr0 = array (
-        'x' => 
-        array (
-            'xrstf\\Composer52' => 
-            array (
-                0 => __DIR__ . '/..' . '/xrstf/composer-php52/lib',
-            ),
-        ),
-    );
-
     public static $classMap = array (
         'GFML_Conditional_Logic' => __DIR__ . '/../..' . '/classes/class-gfml-conditional-logic.php',
         'GFML_Form' => __DIR__ . '/../..' . '/classes/class-gfml-form.php',
@@ -37,8 +27,7 @@ class ComposerStaticInit0f11e33388d808b907fc12e83e54e39a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixesPsr0 = ComposerStaticInit0f11e33388d808b907fc12e83e54e39a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit0f11e33388d808b907fc12e83e54e39a::$classMap;
+            $loader->classMap = ComposerStaticInit59c82f7e550943a2b70b6dfdd180df68::$classMap;
 
         }, null, ClassLoader::class);
     }

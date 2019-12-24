@@ -23,28 +23,31 @@ class GFML_Form {
 	 * @return array
 	 */
 	protected function get_multi_input_translations( $field, $st_context ) {
-		if ( ! $this->multi_input_translations && is_array( $field->choices ) ) {
+		$field_id = $field->id;
+
+		if ( ! is_array( $field->choices ) ) {
+			return [];
+		}
+
+		if ( ! array_key_exists( $field_id, $this->multi_input_translations ) ) {
 			$snh        = new GFML_String_Name_Helper();
 			$snh->field = $field;
+
+			$translations = [];
 
 			foreach ( $field->choices as $index => $choice ) {
 				$snh->field_choice       = $choice;
 				$snh->field_choice_index = $index;
 
-				$choice_id = $choice['text']; // We use the 'text' property in the original language as ID for the translations cluster.
+				$choice_id = $choice['value']; // We use the 'text' property in the original language as ID for the translations cluster.
 
-				$this->multi_input_translations[ $choice_id ] = array(
-					'text'  => icl_t( $st_context, $snh->get_field_multi_input_choice_text(), $choice['text'] ),
-					'value' => null,
-				);
-
-				if ( isset( $choice['value'] ) ) {
-					$this->multi_input_translations[ $choice_id ]['value'] = icl_t( $st_context, $snh->get_field_multi_input_choice_value(), $choice['value'] );
-				}
+				$translations[ $choice_id ] = icl_t( $st_context, $snh->get_field_multi_input_choice_value(), $choice['value'] );
 			}
+
+			$this->multi_input_translations[ $field_id ] = $translations;
 		}
 
-		return $this->multi_input_translations;
+		return $this->multi_input_translations[ $field_id ];
 	}
 
 	/**

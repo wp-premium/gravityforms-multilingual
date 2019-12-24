@@ -17,19 +17,14 @@ class GFML_Conditional_Logic extends GFML_Form {
 		foreach ( $form['fields'] as $id => &$field ) {
 
 			if ( $field->conditionalLogic && $field->conditionalLogic['rules'] ) {
-				foreach ( $field->conditionalLogic['rules'] as &$rule ) {
-					$rule_field = $this->get_field_from_rule( $form, $rule );
-					if ( $rule_field ) {
-						$translations = $this->get_multi_input_translations( $rule_field, $st_context );
-						if ( array_key_exists( $rule['value'], $translations ) && isset( $rule_field->choices ) && is_array( $rule_field->choices ) ) {
-							$translated_rule = $translations[ $rule['value'] ];
 
-							if ( array_key_exists( 'text', $translated_rule ) ) {
-								$rule['value'] = $translated_rule['text'];
-							} elseif ( array_key_exists( 'value', $translated_rule ) ) {
-								$rule['value'] = $translated_rule['value'];
-							}
-						}
+				foreach ( $field->conditionalLogic['rules'] as &$rule ) {
+
+					$rule_field = $this->get_field_from_rule( $form, $rule );
+
+					if ( isset( $rule_field->choices ) && is_array( $rule_field->choices ) ) {
+						$translations  = $this->get_multi_input_translations( $rule_field, $st_context );
+						$rule['value'] = $translations[ $rule['value'] ];
 					}
 				}
 			}
