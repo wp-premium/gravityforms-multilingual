@@ -297,6 +297,7 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 				case 'radio':
 				case 'product':
 				case 'option':
+				case 'shipping':
 					$this->register_strings_field_option( $form_package, $form_field );
 					break;
 				case 'post_custom_field':
