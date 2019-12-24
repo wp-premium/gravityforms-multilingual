@@ -1,33 +1,32 @@
 <?php
-/*
-Plugin Name: Gravity Forms Multilingual
-Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
-Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-5-1/">Gravity Forms Multilingual 1.5.1 release notes</a>
-Author: OnTheGoSystems
-Author URI: http://www.onthegosystems.com/
-Version: 1.5.1
-Plugin Slug: gravityforms-multilingual
-*/
+/**
+ * Plugin Name: Gravity Forms Multilingual
+ * Plugin URI: http://wpml.org/documentation/related-projects/gravity-forms-multilingual/
+ * Description: Add multilingual support for Gravity Forms | <a href="https://wpml.org">Documentation</a> | <a href="https://wpml.org/version/gravityforms-multilingual-1-5-3/">Gravity Forms Multilingual 1.5.3 release notes</a>
+ * Author: OnTheGoSystems
+ * Author URI: http://www.onthegosystems.com/
+ * Version: 1.5.3
+ * Plugin Slug: gravityforms-multilingual
+ *
+ * @package WPML\gfml
+ */
 
 if ( defined( 'GRAVITYFORMS_MULTILINGUAL_VERSION' ) ) {
 	return;
 }
 
-define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.5.1' );
+define( 'GRAVITYFORMS_MULTILINGUAL_VERSION', '1.5.3' );
 define( 'GRAVITYFORMS_MULTILINGUAL_PATH', dirname( __FILE__ ) );
 
-$autoloader_dir = GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor';
-if ( version_compare( PHP_VERSION, '5.3.0' ) >= 0 ) {
-	$autoloader = $autoloader_dir . '/autoload.php';
-} else {
-	$autoloader = $autoloader_dir . '/autoload_52.php';
-}
-require_once $autoloader;
+require_once GRAVITYFORMS_MULTILINGUAL_PATH . '/vendor/autoload.php';
 
 add_action( 'wpml_gfml_has_requirements', 'load_gfml' );
 
 new WPML_GFML_Requirements();
 
+/**
+ * Load the plugin if WPML-Core is installed
+ */
 function load_gfml() {
 	if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
 		require GRAVITYFORMS_MULTILINGUAL_PATH . '/inc/gfml-string-name-helper.class.php';
@@ -52,20 +51,24 @@ function load_gfml() {
 	}
 }
 
-// Disable the normal wpml admin language switcher for gravity forms.
-function gfml_disable_wpml_admin_lang_switcher($state)
-{
+/**
+ * Disable the normal wpml admin language switcher for gravity forms.
+ *
+ * @param string $state
+ *
+ * @return bool
+ */
+function gfml_disable_wpml_admin_lang_switcher( $state ) {
 	global $pagenow;
 
-	if ($pagenow == 'admin.php' && isset($_GET['page']) &&
-		$_GET['page'] == 'gf_edit_forms') {
-
+	if ( 'admin.php' === $pagenow && 'gf_edit_forms' === filter_input( INPUT_GET, 'page' ) ) {
 		$state = false;
 	}
 
 	return $state;
 }
-add_filter('wpml_show_admin_language_switcher', 'gfml_disable_wpml_admin_lang_switcher');
+
+add_filter( 'wpml_show_admin_language_switcher', 'gfml_disable_wpml_admin_lang_switcher' );
 
 /**
  * GFML Quiz compatibility
@@ -75,7 +78,7 @@ add_filter('wpml_show_admin_language_switcher', 'gfml_disable_wpml_admin_lang_sw
  * @param GFML_TM_API $gfml_tm_api
  */
 function wpml_gf_quiz_init( $gfml_tm_api ) {
-	if ( !defined( 'GF_QUIZ_VERSION' ) || version_compare( ICL_SITEPRESS_VERSION, '3.2', '<' ) ) {
+	if ( ! defined( 'GF_QUIZ_VERSION' ) || version_compare( ICL_SITEPRESS_VERSION, '3.2', '<' ) ) {
 		return;
 	}
 
