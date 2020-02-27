@@ -4,6 +4,8 @@ class WPML_GF_Quiz {
 
 	/**
 	 * Quiz main messages
+	 *
+	 * @var array
 	 */
 	private $quiz_messages;
 
@@ -16,27 +18,27 @@ class WPML_GF_Quiz {
 
 		$this->gfml_tm_api = &$gfml_tm_api;
 
-		$this->quiz_messages = array(
+		$this->quiz_messages = [
 			'failConfirmationMessage'   => 'Fail Confirmation',
 			'letterConfirmationMessage' => 'Letter Confirmation',
 			'passConfirmationMessage'   => 'Pass Confirmation',
-		);
+		];
 
-		// Hook functions
-		add_action( 'gform_after_save_form', array( $this, 'gform_after_save_form_action' ), 10, 1 );
-		add_action( 'wpml_gf_register_strings_field_quiz', array( $this, 'register_fields_strings' ), 10, 3 );
-		
-		if ( !is_admin() ) {
-			add_filter( 'gform_pre_render', array( $this, 'gform_pre_render' ), 10 );
-			add_filter( 'gform_pre_submission_filter', array( $this, 'gform_pre_submission_filter' ), 10 );
-			add_filter( 'gform_form_post_get_meta', array( $this, 'quiz_explanation_pre_render' ), 10 );
+		// Hook functions.
+		add_action( 'gform_after_save_form', [ $this, 'gform_after_save_form_action' ], 10, 1 );
+		add_action( 'wpml_gf_register_strings_field_quiz', [ $this, 'register_fields_strings' ], 10, 3 );
+
+		if ( ! is_admin() ) {
+			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render' ], 10 );
+			add_filter( 'gform_pre_submission_filter', [ $this, 'gform_pre_submission_filter' ], 10 );
+			add_filter( 'gform_form_post_get_meta', [ $this, 'quiz_explanation_pre_render' ], 10 );
 		}
 	}
 
 	/**
 	 * Register un-handled quiz main strings
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 */
 	public function gform_after_save_form_action( $form ) {
 		$this->register_main_strings( $form );
@@ -45,7 +47,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Register un-handled quiz main strings
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 */
 	private function register_main_strings( $form ) {
 		if ( $this->is_quiz( $form ) ) {
@@ -58,11 +60,11 @@ class WPML_GF_Quiz {
 	/**
 	 * Register messages strings of the form
 	 *
-	 * @param array $quiz_messages Messages
-	 * @param array $form          Form
+	 * @param array $quiz_messages Messages.
+	 * @param array $form          Form.
 	 */
 	private function register_messages_strings( $quiz_messages, $form ) {
-		if ( !isset( $form['gravityformsquiz'] ) ) {
+		if ( ! isset( $form['gravityformsquiz'] ) ) {
 			return;
 		}
 
@@ -77,7 +79,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Register grades strings of the form
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 */
 	private function register_grades_strings( $form ) {
 		if ( isset( $form['gravityformsquiz']['grades'] ) ) {
@@ -94,12 +96,12 @@ class WPML_GF_Quiz {
 	/**
 	 * Register un-handled quiz field strings
 	 *
-	 * @param array  $form         Form
-	 * @param array  $form_package String form package
-	 * @param object $form_field   Form field
+	 * @param array  $form         Form.
+	 * @param array  $form_package String form package.
+	 * @param object $form_field   Form field.
 	 */
 	public function register_fields_strings( $form, $form_package, $form_field ) {
-		if ( $this->is_quiz( $form ) && in_array( $form_field->inputType, array( 'select', 'radio', 'checkbox' ), true ) ) {
+		if ( $this->is_quiz( $form ) && in_array( $form_field->inputType, [ 'select', 'radio', 'checkbox' ], true ) ) {
 			$this->gfml_tm_api->register_strings_field_option( $this->gfml_tm_api->get_form_package( $form ), $form_field );
 			$this->register_quiz_explanation_string( $this->gfml_tm_api->get_form_package( $form ), $form_field );
 		}
@@ -108,8 +110,8 @@ class WPML_GF_Quiz {
 	/**
 	 * Register quiz explanation strings
 	 *
-	 * @param object  $form_package Form Package
-	 * @param object $form_field   Form field
+	 * @param object $form_package Form Package.
+	 * @param object $form_field   Form field.
 	 */
 	private function register_quiz_explanation_string( $form_package, $form_field ) {
 		if ( ! empty( $form_field['gquizAnswerExplanation'] ) ) {
@@ -123,7 +125,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Get quiz explanation string name
 	 *
-	 * @param object $form_field Form field
+	 * @param object $form_field Form field.
 	 *
 	 * @return array Form
 	 */
@@ -136,7 +138,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Get quiz message string name
 	 *
-	 * @param string $message message slug
+	 * @param string $message message slug.
 	 *
 	 * @return array Form
 	 */
@@ -149,7 +151,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Get quiz grade string name
 	 *
-	 * @param string $value grade value
+	 * @param string $value grade value.
 	 *
 	 * @return array Form
 	 */
@@ -162,7 +164,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Replace strings with translations
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 *
 	 * @return array Form
 	 */
@@ -172,7 +174,7 @@ class WPML_GF_Quiz {
 
 			$form = $this->translate_messages_strings( $form, $form_package, $this->quiz_messages );
 			$form = $this->translate_grades_strings( $form, $form_package );
-			// Choices options are already translated in Gravity_Forms_Multilingual::get_form_strings()
+			// Choices options are already translated in Gravity_Forms_Multilingual::get_form_strings().
 		}
 		return $form;
 	}
@@ -181,7 +183,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Replace strings with translations on form submission
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 *
 	 * @return array $form Form
 	 */
@@ -189,14 +191,14 @@ class WPML_GF_Quiz {
 		$form = $this->gform_pre_render( $form );
 		return $form;
 	}
-	
+
 
 	/**
 	 * Replace quiz explanation strings with translations
 	 * Note: Those strings are passed as JS vars in GFQuiz::enqueue_front_end_scripts()
 	 * which is called earlier, so this is also hooked earlier.
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 *
 	 * @return array Form
 	 */
@@ -213,9 +215,9 @@ class WPML_GF_Quiz {
 	/**
 	 * Translate main strings
 	 *
-	 * @param array  $form          Form
-	 * @param object $form_package  Form Package
-	 * @param array  $quiz_messages List of quiz messages
+	 * @param array  $form          Form.
+	 * @param object $form_package  Form Package.
+	 * @param array  $quiz_messages List of quiz messages.
 	 *
 	 * @return array Form
 	 */
@@ -234,8 +236,8 @@ class WPML_GF_Quiz {
 	/**
 	 * Translate grade strings
 	 *
-	 * @param array $form         Form
-	 * @param object $form_package Form Package
+	 * @param array  $form         Form.
+	 * @param object $form_package Form Package.
 	 *
 	 * @return array Form
 	 */
@@ -256,8 +258,8 @@ class WPML_GF_Quiz {
 	/**
 	 * Translate explanation strings
 	 *
-	 * @param array $form         Form
-	 * @param object $form_package Form Package
+	 * @param array  $form         Form.
+	 * @param object $form_package Form Package.
 	 *
 	 * @return array Form
 	 */
@@ -275,7 +277,7 @@ class WPML_GF_Quiz {
 	/**
 	 * Check if this form has a quiz
 	 *
-	 * @param array $form Form
+	 * @param array $form Form.
 	 *
 	 * @return bool
 	 */

@@ -6,7 +6,7 @@
 class WPML_GFML_Filter_Country_Field {
 
 	public function add_hooks() {
-		add_filter( 'gform_countries', array( $this, 'fix_countries_order' ) );
+		add_filter( 'gform_countries', [ $this, 'fix_countries_order' ] );
 	}
 
 	/**
