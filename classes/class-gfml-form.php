@@ -9,7 +9,7 @@ class GFML_Form {
 	 *
 	 * @var array
 	 */
-	private $multi_input_translations = array();
+	private $multi_input_translations = [];
 
 	/**
 	 * It returns an associative array where the first level key is the original value of the choice "text"

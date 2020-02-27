@@ -8,7 +8,7 @@ class WPML_GFML_Plugin_Activation {
 	public function register_callback() {
 		register_activation_hook(
 			GRAVITYFORMS_MULTILINGUAL_PATH . '/plugin.php',
-			array( $this, 'callback' )
+			[ $this, 'callback' ]
 		);
 	}
 
