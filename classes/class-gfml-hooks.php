@@ -22,9 +22,9 @@ class GFML_Hooks {
 	 * Gravity Forms actions and filters hooks.
 	 */
 	public function init() {
-		add_action( 'gform_post_form_duplicated', array( $this, 'gform_post_form_duplicated' ), 10, 2 );
-		add_action( 'gform_forms_post_import', array( $this, 'gform_forms_post_import' ) );
-		add_filter( 'wpml_tm_dashboard_date', array( $this, 'set_gfml_date_on_tm_dashboard' ), 10, 3 );
+		add_action( 'gform_post_form_duplicated', [ $this, 'gform_post_form_duplicated' ], 10, 2 );
+		add_action( 'gform_forms_post_import', [ $this, 'gform_forms_post_import' ] );
+		add_filter( 'wpml_tm_dashboard_date', [ $this, 'set_gfml_date_on_tm_dashboard' ], 10, 3 );
 	}
 
 	/**

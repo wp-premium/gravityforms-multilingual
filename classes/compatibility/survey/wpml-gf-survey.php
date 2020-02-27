@@ -23,10 +23,10 @@ class WPML_GF_Survey {
 	}
 
 	public function add_hooks() {
-		add_action( 'wpml_gf_register_strings_field_survey', array( $this, 'register_field_strings' ), 10, 3 );
+		add_action( 'wpml_gf_register_strings_field_survey', [ $this, 'register_field_strings' ], 10, 3 );
 
 		if ( ! is_admin() ) {
-			add_filter( 'gform_pre_render', array( $this, 'gform_pre_render' ), 10 );
+			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render' ], 10 );
 		}
 	}
 
@@ -38,7 +38,7 @@ class WPML_GF_Survey {
 	public function gform_pre_render( $form ) {
 		if ( $this->has_survey_field( $form ) ) {
 			$form_package = $this->gfml_tm_api->get_form_package( $form );
-			$form = $this->translate_strings_for_likert_rows( $form, $form_package );
+			$form         = $this->translate_strings_for_likert_rows( $form, $form_package );
 		}
 
 		return $form;
